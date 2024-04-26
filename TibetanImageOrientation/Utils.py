@@ -200,8 +200,8 @@ def calculate_angle(line_prediction: np.array) -> np.array:
     angles = []
     for contour in contours:
         center, _, angle = cv2.minAreaRect(contour)
-
-        if angle != 90 or angle != 0:
+        # TODO: verify the situation here, usually the angles are much smaller, +- 10 degrees might suffice
+        if angle != 90 and angle != 0:
             angles.append(angle)
 
     mean_angle = np.mean(angles)
