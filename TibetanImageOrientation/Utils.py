@@ -164,7 +164,6 @@ def unpatch_image(image, pred_patches: list) -> np.array:
 
 
 def unpatch_prediction(prediction: np.array, y_splits: int) -> np.array:
-    prediction *= 255
     prediction_sliced = np.array_split(prediction, y_splits, axis=0)
     prediction_sliced = [np.concatenate(x, axis=1) for x in prediction_sliced]
     prediction_sliced = np.vstack(np.array(prediction_sliced))
@@ -198,11 +197,12 @@ def randomly_rotate(image: np.array, limit: int = 10) -> np.array:
 def calculate_angle(line_prediction: np.array) -> np.array:
     slice = get_random_slice(line_prediction)
     contours, _ = cv2.findContours(slice, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-
+    angles = []
     for contour in contours:
-        angles = []
         center, _, angle = cv2.minAreaRect(contour)
-        angles.append(angle)
+
+        if angle != 90 or angle != 0:
+            angles.append(angle)
 
     mean_angle = np.mean(angles)
 

@@ -84,6 +84,7 @@ class LineDetection:
         stitched_image = cv2.resize(
             stitched_image, (original_image.shape[1], original_image.shape[0])
         )
+        stitched_image *= 255
         stitched_image = stitched_image.astype(np.uint8)
 
         return stitched_image
